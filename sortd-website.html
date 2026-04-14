@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sortd. — Order Looks Good On You</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FAF8F4;
+  --warm: #FFFFFF;
+  --charcoal: #2C2A27;
+  --mid: #7A7570;
+  --light: #C0BAB2;
+  --accent: #A8845A;
+  --accent-light: #C9A87C;
+  --line: #E8E2D9;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: 'DM Mono', monospace;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 60px;
+  background: rgba(245, 241, 234, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.4s;
+}
+
+nav.scrolled { border-bottom-color: var(--line); }
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--charcoal);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--charcoal); }
+
+.nav-cta {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  background: var(--charcoal);
+  color: var(--cream) !important;
+  text-decoration: none;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: var(--accent) !important; color: var(--cream) !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 80px;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 60px 80px 60px;
+  position: relative;
+}
+
+.hero-left::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 15%; bottom: 15%;
+  width: 1px;
+  background: var(--line);
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 6vw, 82px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 2;
+  max-width: 380px;
+  margin-bottom: 48px;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--charcoal);
+  border-bottom: 1px solid var(--charcoal);
+  padding-bottom: 6px;
+  width: fit-content;
+  transition: gap 0.3s, color 0.2s, border-color 0.2s;
+}
+
+.hero-cta:hover { gap: 24px; color: var(--accent); border-color: var(--accent); }
+
+.hero-right {
+  background: #EDE8DF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-right::before {
+  content: 'Sortd.';
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 240px;
+  font-weight: 300;
+  color: rgba(0,0,0,0.05);
+  position: absolute;
+  bottom: -40px;
+  right: -30px;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.hero-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.hero-stat {
+  background: rgba(0,0,0,0.04);
+  padding: 32px 28px;
+  transition: background 0.3s;
+}
+
+.hero-stat:hover { background: rgba(0,0,0,0.07); }
+
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* ABOUT */
+#about {
+  padding: 120px 60px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  border-top: 1px solid var(--line);
+}
+
+.section-tag {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 8px;
+}
+
+.about-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.about-content h2 em { font-style: italic; color: var(--accent); }
+
+.about-content p {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 2.1;
+  max-width: 560px;
+  margin-bottom: 20px;
+}
+
+.about-signature {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--charcoal);
+  margin-top: 32px;
+}
+
+.about-signature span {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: 6px;
+}
+
+/* SERVICES */
+#services {
+  background: #F0EBE2;
+  padding: 120px 60px;
+}
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 72px;
+}
+
+.services-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: -0.01em;
+}
+
+.services-header h2 em { font-style: italic; color: var(--accent); }
+
+.services-header p {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.06em;
+  max-width: 240px;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 60px;
+}
+
+.pkg-card {
+  background: rgba(255,255,255,0.6);
+  padding: 40px 32px;
+  border-top: 2px solid transparent;
+  transition: all 0.3s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.pkg-card:hover {
+  background: rgba(255,255,255,0.9);
+  border-top-color: var(--accent);
+}
+
+.pkg-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.pkg-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.pkg-price sup {
+  font-size: 18px;
+  vertical-align: super;
+}
+
+.pkg-price span {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--light);
+  font-weight: 300;
+}
+
+.pkg-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 20px;
+}
+
+.pkg-detail {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--mid);
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+/* ADDONS */
+.addons-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.addon-card {
+  background: rgba(255,255,255,0.5);
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.addon-card:hover { background: rgba(255,255,255,0.85); }
+
+.addon-name {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--mid);
+}
+
+.addon-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+/* SUPPLY SECTION */
+#supply {
+  padding: 100px 60px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+}
+
+.supply-intro h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.supply-intro p {
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.9;
+}
+
+.supply-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.supply-opt {
+  padding: 28px 32px;
+  background: var(--warm);
+  border-left: 3px solid transparent;
+  transition: all 0.3s;
+}
+
+.supply-opt:hover { border-left-color: var(--accent); }
+
+.supply-opt-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.supply-opt-desc {
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.8;
+}
+
+/* PROCESS */
+#process {
+  padding: 120px 60px;
+  background: var(--warm);
+  border-top: 1px solid var(--line);
+}
+
+#process h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 72px;
+  text-align: center;
+}
+
+#process h2 em { font-style: italic; color: var(--accent); }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+.step {
+  padding: 40px 32px;
+  background: var(--cream);
+  position: relative;
+}
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--line);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.step-desc {
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.9;
+}
+
+/* CONTACT */
+#contact {
+  padding: 120px 60px;
+  background: #EDE8DF;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#contact::before {
+  content: '"order looks good on you"';
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 120px;
+  font-weight: 300;
+  color: rgba(0,0,0,0.04);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.contact-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+#contact h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 6vw, 78px);
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+#contact h2 em { font-style: italic; color: var(--accent); }
+
+#contact p {
+  font-size: 12px;
+  color: var(--mid);
+  margin-bottom: 52px;
+  line-height: 2;
+}
+
+.contact-form {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  width: 100%;
+  background: rgba(255,255,255,0.7);
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: var(--charcoal);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 300;
+  padding: 18px 20px;
+  outline: none;
+  transition: background 0.2s, border-color 0.2s;
+  -webkit-appearance: none;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--light); }
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  background: rgba(255,255,255,0.95);
+  border-bottom-color: var(--accent);
+}
+
+.contact-form select option { background: var(--warm); color: var(--charcoal); }
+
+.contact-form textarea { min-height: 100px; resize: vertical; }
+
+.contact-submit {
+  margin-top: 12px;
+  padding: 18px 48px;
+  background: var(--accent);
+  color: var(--cream);
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.contact-submit:hover { background: var(--accent-light); }
+
+/* FOOTER */
+footer {
+  padding: 32px 60px;
+  background: var(--charcoal);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.3);
+}
+
+.footer-note {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ANIMATIONS */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 80px 24px 60px; }
+  .hero-left::after { display: none; }
+  .hero-right { padding: 60px 24px; }
+  #about, #supply { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+  #services, #process, #contact { padding: 80px 24px; }
+  .packages-grid { grid-template-columns: 1fr 1fr; }
+  .addons-row { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .services-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .services-header p { text-align: left; }
+  footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Sortd.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Home Organizing — Done Beautifully</div>
+    <h1 class="hero-headline">Order<br>looks <em>good</em><br>on you.</h1>
+    <p class="hero-sub">Sortd. is a luxury home organizing service that transforms your space into a calm, curated environment — so every room feels exactly the way it should.</p>
+    <a href="#services" class="hero-cta">Explore Services →</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-grid">
+      <div class="hero-stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Tailored Packages</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">1:1</div>
+        <div class="stat-label">Personal Sessions</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Customized</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Peace of Mind</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag fade-up">About</div>
+  <div class="about-content">
+    <h2 class="fade-up">Your home should feel like a <em>sanctuary</em>, not a to-do list.</h2>
+    <p class="fade-up">Hi, I'm Ky — the founder of Sortd. I believe that the way your space is organized has a direct impact on how you feel every single day. Clutter creates noise. Order creates clarity.</p>
+    <p class="fade-up">Sortd. exists to help you build a home that works for your life — not against it. Every session is thoughtful, personalized, and designed with your unique rhythm in mind.</p>
+    <div class="about-signature fade-up">
+      Ky
+      <span>Founder, Sortd.</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <h2 class="fade-up">Choose your<br><em>package.</em></h2>
+    <p class="fade-up">Every space is different.<br>Every package is designed<br>to meet you where you are.</p>
+  </div>
+
+  <div class="packages-grid">
+    <div class="pkg-card fade-up">
+      <div class="pkg-name">The Edit</div>
+      <div class="pkg-price"><sup>$</sup>150</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-detail">
+        Single Space<br>
+        Up to 2 Hours<br>
+        Closet / Pantry / Drawer<br>
+        Quick Refresh
+      </div>
+    </div>
+    <div class="pkg-card fade-up">
+      <div class="pkg-name">The Reset</div>
+      <div class="pkg-price"><sup>$</sup>350</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-detail">
+        One Full Room<br>
+        Up to 4 Hours<br>
+        Declutter + Organize<br>
+        Most Popular
+      </div>
+    </div>
+    <div class="pkg-card fade-up">
+      <div class="pkg-name">The Overhaul</div>
+      <div class="pkg-price"><sup>$</sup>650</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-detail">
+        2–3 Rooms<br>
+        Up to 8 Hours<br>
+        Custom Org. Plan<br>
+        Full Transformation
+      </div>
+    </div>
+    <div class="pkg-card fade-up">
+      <div class="pkg-name">The Full Sortd.</div>
+      <div class="pkg-price"><sup>$</sup>1,200<span>+</span></div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-detail">
+        Whole Home<br>
+        Multi-Day Project<br>
+        Custom Quote<br>
+        Complete System
+      </div>
+    </div>
+  </div>
+
+  <div class="addons-row">
+    <div class="addon-card fade-up">
+      <span class="addon-name">Supply Shopping & Sourcing</span>
+      <span class="addon-price">$75</span>
+    </div>
+    <div class="addon-card fade-up">
+      <span class="addon-name">Follow-Up Maintenance (1hr)</span>
+      <span class="addon-price">$85</span>
+    </div>
+    <div class="addon-card fade-up">
+      <span class="addon-name">Virtual Organizing Consultation</span>
+      <span class="addon-price">$60</span>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPLY -->
+<section id="supply">
+  <div class="supply-intro fade-up">
+    <div class="section-tag" style="margin-bottom:20px">Supplies</div>
+    <h2>How supplies work.</h2>
+    <p>You choose the approach that fits your style. All options are available — just let me know your preference when you book.</p>
+  </div>
+  <div class="supply-options-list">
+    <div class="supply-opt fade-up">
+      <div class="supply-opt-name">Pass-Through</div>
+      <div class="supply-opt-desc">I shop for everything on your behalf. You reimburse the exact cost of supplies plus a $75 sourcing fee for my time.</div>
+    </div>
+    <div class="supply-opt fade-up">
+      <div class="supply-opt-name">Flat Budget</div>
+      <div class="supply-opt-desc">We agree on a supply budget before your session begins — no surprises. Great for clients who like to plan ahead.</div>
+    </div>
+    <div class="supply-opt fade-up">
+      <div class="supply-opt-name">Client Purchases</div>
+      <div class="supply-opt-desc">I send you a curated shopping list and you purchase everything before our session. I show up and organize — simple.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <h2 class="fade-up">How it <em>works.</em></h2>
+  <div class="steps">
+    <div class="step fade-up">
+      <div class="step-num">01</div>
+      <div class="step-title">Book a Consult</div>
+      <div class="step-desc">Fill out the form below or reach out directly. We'll chat about your space, goals, and the right package for you.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">02</div>
+      <div class="step-title">We Make a Plan</div>
+      <div class="step-desc">I'll send you a custom plan, your contract, and confirm supply preferences before we get started.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">03</div>
+      <div class="step-title">Transform Your Space</div>
+      <div class="step-desc">We work together (or I handle it solo) to sort, declutter, and organize your space with intention.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">04</div>
+      <div class="step-title">Enjoy the Order</div>
+      <div class="step-desc">Your home, elevated. Every drawer, shelf, and surface exactly where it should be. Maintenance sessions available.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-eyebrow">Ready to get Sortd.?</div>
+  <h2>Let's <em>transform</em><br>your space.</h2>
+  <p>Fill out the form and I'll be in touch within 24 hours.</p>
+  <div class="contact-form">
+    <input type="text" placeholder="Your Name">
+    <input type="email" placeholder="Your Email">
+    <select>
+      <option value="" disabled selected>Select a Package</option>
+      <option>The Edit — $150</option>
+      <option>The Reset — $350</option>
+      <option>The Overhaul — $650</option>
+      <option>The Full Sortd. — $1,200+</option>
+      <option>Add-On Only</option>
+      <option>Not sure yet</option>
+    </select>
+    <textarea placeholder="Tell me about your space and what you're hoping to achieve..."></textarea>
+    <button class="contact-submit">Send Inquiry →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sortd.</div>
+  <div class="footer-note">order looks good on you — © 2026 Sortd. by Ky</div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
